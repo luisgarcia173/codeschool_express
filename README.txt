@@ -151,3 +151,25 @@ $ npm install --save express@4.9 //if you want to specify the version
 
 > DELETE request
  - app.delete('/blocks/:name', function(req, resp) {
+
+# ROUTE INSTANCES
+
+> Refactoring routes to reuse the prefix
+Before:
+ - app.get('/blocks', function(req, resp) {
+ - app.post('/blocks', parseUrlencoded, function(req, resp) {
+
+After:
+ - var blocksRoute = app.route('/blocks');
+ - blocksRoute.get(function(req, resp) {
+ - blocksRoute.post(parseUrlencoded, function(req, resp) {
+
+Chaining:
+ - app.route('/blocks')
+     .get(function(req, resp) { ... })
+     .post(parseUrlencoded, function(req, resp) { ... });
+
+> Route Files
+ - create a new folder for routes
+ - router.route('/') is equivalent to app.route('/blocks')
+ - .all(function(req, resp, next){ is equivalent to app.param('name', function(req, resp, next){
